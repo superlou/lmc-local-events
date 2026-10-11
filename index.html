@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mamaroneck Community Events</title>
+    <meta name="description" content="Explore community events in Mamaroneck and Larchmont.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    {{content-for "head"}}
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍂</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link integrity="" rel="stylesheet" href="/@embroider/virtual/vendor.css">
+    <link integrity="" rel="stylesheet" href="/@embroider/virtual/app.css">
+
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+    {{content-for "body"}}
+
+    <script src="/@embroider/virtual/vendor.js"></script>
+    <script type="module">
+      import Application from './app/app';
+      import environment from './app/config/environment';
+
+      Application.create(environment.APP);
+    </script>
+
+    {{content-for "body-footer"}}
+  </body>
+</html>
