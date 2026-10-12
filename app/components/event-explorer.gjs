@@ -26,20 +26,29 @@ export default class EventExplorer extends Component {
 
   get allTags() {
     const counts = new Map();
-    for (const e of this.scope) for (const t of e.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+    for (const e of this.scope)
+      for (const t of e.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
     return [...counts.entries()]
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   }
 
   get visibleTags() {
-    const base = this.showAllTags ? this.allTags : this.allTags.slice(0, TOP_TAGS);
+    const base = this.showAllTags
+      ? this.allTags
+      : this.allTags.slice(0, TOP_TAGS);
     const shown = new Set(base.map((t) => t.name));
     // keep selected tags visible even when they're outside the top list
     const extra = this.selected
       .filter((name) => !shown.has(name))
-      .map((name) => ({ name, count: this.allTags.find((t) => t.name === name)?.count ?? 0 }));
-    return [...extra, ...base].map((t) => ({ ...t, active: this.selected.includes(t.name) }));
+      .map((name) => ({
+        name,
+        count: this.allTags.find((t) => t.name === name)?.count ?? 0,
+      }));
+    return [...extra, ...base].map((t) => ({
+      ...t,
+      active: this.selected.includes(t.name),
+    }));
   }
 
   get hasMoreTags() {
@@ -47,7 +56,9 @@ export default class EventExplorer extends Component {
   }
 
   get moreLabel() {
-    return this.showAllTags ? 'Show fewer tags' : `Show all ${this.allTags.length} tags`;
+    return this.showAllTags
+      ? 'Show fewer tags'
+      : `Show all ${this.allTags.length} tags`;
   }
 
   get rows() {
@@ -56,9 +67,14 @@ export default class EventExplorer extends Component {
       .filter(
         (e) =>
           !sel.length ||
-          (this.matchAll ? sel.every((t) => e.tags.includes(t)) : sel.some((t) => e.tags.includes(t))),
+          (this.matchAll
+            ? sel.every((t) => e.tags.includes(t))
+            : sel.some((t) => e.tags.includes(t))),
       )
-      .map((e) => ({ ...e, tagItems: e.tags.map((name) => ({ name, active: sel.includes(name) })) }));
+      .map((e) => ({
+        ...e,
+        tagItems: e.tags.map((name) => ({ name, active: sel.includes(name) })),
+      }));
   }
 
   get status() {
@@ -101,25 +117,50 @@ export default class EventExplorer extends Component {
           <strong>Filter by tag</strong>
           <div class="ctrls">
             <span class="seg" role="group" aria-label="Tag matching">
-              <button type="button" aria-pressed={{if this.matchAll "true" "false"}} {{on "click" (fn this.setMatchAll true)}}>Match all</button>
-              <button type="button" aria-pressed={{if this.matchAll "false" "true"}} {{on "click" (fn this.setMatchAll false)}}>Match any</button>
+              <button
+                type="button"
+                aria-pressed={{if this.matchAll "true" "false"}}
+                {{on "click" (fn this.setMatchAll true)}}
+              >Match all</button>
+              <button
+                type="button"
+                aria-pressed={{if this.matchAll "false" "true"}}
+                {{on "click" (fn this.setMatchAll false)}}
+              >Match any</button>
             </span>
             <label class="toggle">
-              <input type="checkbox" checked={{this.showPast}} {{on "change" this.setShowPast}} />
+              <input
+                type="checkbox"
+                checked={{this.showPast}}
+                {{on "change" this.setShowPast}}
+              />
               Show past events ({{this.pastCount}})
             </label>
             {{#if this.selected.length}}
-              <button type="button" class="linkbtn" {{on "click" this.clear}}>Clear filters</button>
+              <button
+                type="button"
+                class="linkbtn"
+                {{on "click" this.clear}}
+              >Clear filters</button>
             {{/if}}
           </div>
         </div>
         <div class="chips">
           {{#each this.visibleTags key="name" as |t|}}
-            <TagChip @name={{t.name}} @count={{t.count}} @active={{t.active}} @onToggle={{this.toggle}} />
+            <TagChip
+              @name={{t.name}}
+              @count={{t.count}}
+              @active={{t.active}}
+              @onToggle={{this.toggle}}
+            />
           {{/each}}
         </div>
         {{#if this.hasMoreTags}}
-          <button type="button" class="linkbtn" {{on "click" this.toggleAllTags}}>{{this.moreLabel}}</button>
+          <button
+            type="button"
+            class="linkbtn"
+            {{on "click" this.toggleAllTags}}
+          >{{this.moreLabel}}</button>
         {{/if}}
       </div>
 
@@ -132,17 +173,30 @@ export default class EventExplorer extends Component {
           <tbody>
             {{#each this.rows key="id" as |e|}}
               <tr class={{if e.past "past"}}>
-                <td class="date"><b>{{formatDate e.date}}</b><span>{{timeLabel e.date e.hasTime}}</span></td>
+                <td class="date"><b>{{formatDate e.date}}</b><span>{{timeLabel
+                      e.date
+                      e.hasTime
+                    }}</span></td>
                 <td class="ev">
-                  <a class="t" href={{e.link}} target="_blank" rel="noopener noreferrer">{{e.title}}</a>
-                  <div class="org">{{e.organization}}{{#if e.past}} · Past event{{/if}}</div>
+                  <a
+                    class="t"
+                    href={{e.link}}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{e.title}}</a>
+                  <div class="org">{{e.organization}}{{#if e.past}}
+                      · Past event{{/if}}</div>
                   <p class="d">{{e.why}}</p>
                 </td>
                 <td class="where">{{e.where}}</td>
                 <td class="tg">
                   <div class="tags">
                     {{#each e.tagItems key="name" as |t|}}
-                      <TagChip @name={{t.name}} @active={{t.active}} @onToggle={{this.toggle}} />
+                      <TagChip
+                        @name={{t.name}}
+                        @active={{t.active}}
+                        @onToggle={{this.toggle}}
+                      />
                     {{/each}}
                   </div>
                 </td>
@@ -151,7 +205,8 @@ export default class EventExplorer extends Component {
           </tbody>
         </table>
         {{#unless this.rows.length}}
-          <div class="empty">No events match those tags. Try “Match any” or clear a filter.</div>
+          <div class="empty">No events match those tags. Try “Match any” or
+            clear a filter.</div>
         {{/unless}}
       </div>
     </section>

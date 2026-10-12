@@ -8,7 +8,8 @@ import EventExplorer from 'lmc-local-events/components/event-explorer';
   <header class="top wrap">
     <p class="eyebrow">Mamaroneck &amp; Larchmont</p>
     <h1>Community Events</h1>
-    <p class="sub">Three picks worth planning around, then everything else happening nearby.</p>
+    <p class="sub">Three picks worth planning around, then everything else
+      happening nearby.</p>
   </header>
 
   <main>
@@ -17,6 +18,7 @@ import EventExplorer from 'lmc-local-events/components/event-explorer';
   </main>
 
   <footer>
-    <div class="wrap">Event details come from local organizations; check each event's page for the latest information.</div>
+    <div class="wrap">Event details come from local organizations; check each
+      event's page for the latest information.</div>
   </footer>
 </template>

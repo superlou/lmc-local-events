@@ -3,7 +3,8 @@ import { service } from '@ember/service';
 import { htmlSafe } from '@ember/template';
 import { whenLabel } from 'lmc-local-events/utils/dates';
 
-const background = (img) => htmlSafe(`background-image:url(data:image/jpeg;base64,${img})`);
+const background = (img) =>
+  htmlSafe(`background-image:url(data:image/jpeg;base64,${img})`);
 
 export default class FeaturedEvents extends Component {
   @service events;
@@ -23,7 +24,9 @@ export default class FeaturedEvents extends Component {
             <div class="body">
               <span class="badge">Featured</span>
               <h2>{{f.event.title}}</h2>
-              <p class="meta">{{whenLabel f.event.date f.event.hasTime}} &nbsp;·&nbsp; {{f.event.where}}</p>
+              <p class="meta">{{whenLabel f.event.date f.event.hasTime}}
+                &nbsp;·&nbsp;
+                {{f.event.where}}</p>
               <p class="why">{{f.event.why}}</p>
               <span class="go">Event details →</span>
             </div>
