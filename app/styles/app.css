@@ -1,7 +1,6 @@
 :root {
   box-sizing: border-box;
-  padding-top: env(safe-area-inset-top, 0);
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding: env(safe-area-inset-top, 0) 2em env(safe-area-inset-bottom, 0);
 
   --bg: #faf6ef;
   --surface: #fff;
@@ -71,7 +70,6 @@ a {
 .wrap {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 header.top {

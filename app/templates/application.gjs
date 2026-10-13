@@ -3,12 +3,13 @@ import FeaturedEvents from 'lmc-local-events/components/featured-events';
 import EventExplorer from 'lmc-local-events/components/event-explorer';
 
 <template>
-  {{pageTitle "Mamaroneck Community Events"}}
+  {{pageTitle "LMC Media Community Events"}}
 
   <header class="top wrap">
     <p class="eyebrow">Mamaroneck &amp; Larchmont</p>
     <h1>Community Events</h1>
-    <p class="sub">Three picks worth planning around, then everything else
+    <p class="sub">Three picks from
+      <a href="https://lmcmedia.org">LMC Media</a>, then everything else
       happening nearby.</p>
   </header>
 
@@ -18,7 +19,11 @@ import EventExplorer from 'lmc-local-events/components/event-explorer';
   </main>
 
   <footer>
-    <div class="wrap">Event details come from local organizations; check each
-      event's page for the latest information.</div>
+    <div class="wrap">
+      Brought to you by
+      <strong><a href="http://lmcmedia.org">LMC Media</a></strong>. Event
+      details come from local organizations; check each event's page for the
+      latest information.
+    </div>
   </footer>
 </template>
