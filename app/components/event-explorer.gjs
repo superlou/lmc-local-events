@@ -1,33 +1,34 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { service } from '@ember/service';
-import { on } from '@ember/modifier';
-import { fn } from '@ember/helper';
 import TagChip from './tag-chip';
+import TagsPanel from './tags-panel';
 import { formatDate, timeLabel } from 'lmc-local-events/utils/dates';
 
 const TOP_TAGS = 14;
 
 export default class EventExplorer extends Component {
-  @service events;
-
   @tracked selected = [];
   @tracked matchAll = true;
   @tracked showPast = false;
   @tracked showAllTags = false;
 
   get scope() {
-    return this.events.all.filter((e) => this.showPast || !e.past);
+    return this.args.events.filter((e) => this.showPast || !e.past);
   }
 
   get pastCount() {
-    return this.events.all.filter((e) => e.past).length;
+    return this.args.events.filter((e) => e.past).length;
   }
 
   get allTags() {
     const counts = new Map();
-    for (const e of this.scope)
-      for (const t of e.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+
+    for (const e of this.scope) {
+      for (const t of e.tags) {
+        counts.set(t, (counts.get(t) ?? 0) + 1);
+      }
+    }
+
     return [...counts.entries()]
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
@@ -37,7 +38,9 @@ export default class EventExplorer extends Component {
     const base = this.showAllTags
       ? this.allTags
       : this.allTags.slice(0, TOP_TAGS);
+
     const shown = new Set(base.map((t) => t.name));
+
     // keep selected tags visible even when they're outside the top list
     const extra = this.selected
       .filter((name) => !shown.has(name))
@@ -45,6 +48,7 @@ export default class EventExplorer extends Component {
         name,
         count: this.allTags.find((t) => t.name === name)?.count ?? 0,
       }));
+
     return [...extra, ...base].map((t) => ({
       ...t,
       active: this.selected.includes(t.name),
@@ -112,57 +116,20 @@ export default class EventExplorer extends Component {
       <h2 class="sec" id="all-events">All events</h2>
       <p class="sub tight">Sorted by date. Pick tags to narrow the list.</p>
 
-      <div class="panel">
-        <div class="panel-head">
-          <strong>Filter by tag</strong>
-          <div class="ctrls">
-            <span class="seg" role="group" aria-label="Tag matching">
-              <button
-                type="button"
-                aria-pressed={{if this.matchAll "true" "false"}}
-                {{on "click" (fn this.setMatchAll true)}}
-              >Match all</button>
-              <button
-                type="button"
-                aria-pressed={{if this.matchAll "false" "true"}}
-                {{on "click" (fn this.setMatchAll false)}}
-              >Match any</button>
-            </span>
-            <label class="toggle">
-              <input
-                type="checkbox"
-                checked={{this.showPast}}
-                {{on "change" this.setShowPast}}
-              />
-              Show past events ({{this.pastCount}})
-            </label>
-            {{#if this.selected.length}}
-              <button
-                type="button"
-                class="linkbtn"
-                {{on "click" this.clear}}
-              >Clear filters</button>
-            {{/if}}
-          </div>
-        </div>
-        <div class="chips">
-          {{#each this.visibleTags key="name" as |t|}}
-            <TagChip
-              @name={{t.name}}
-              @count={{t.count}}
-              @active={{t.active}}
-              @onToggle={{this.toggle}}
-            />
-          {{/each}}
-        </div>
-        {{#if this.hasMoreTags}}
-          <button
-            type="button"
-            class="linkbtn"
-            {{on "click" this.toggleAllTags}}
-          >{{this.moreLabel}}</button>
-        {{/if}}
-      </div>
+      <TagsPanel
+        @visibleTags={{this.visibleTags}}
+        @hasMoreTags={{this.hasMoreTags}}
+        @matchAll={{this.matchAll}}
+        @moreLabel={{this.moreLabel}}
+        @selected={{this.selected}}
+        @showPast={{this.showPast}}
+        @pastCount={{this.pastCount}}
+        @setMatchAll={{this.setMatchAll}}
+        @setShowPast={{this.setShowPast}}
+        @toggle={{this.toggle}}
+        @toggleAllTags={{this.toggleAllTags}}
+        @clear={{this.clear}}
+      />
 
       <p class="status" aria-live="polite">{{this.status}}</p>
       <div class="tablewrap">

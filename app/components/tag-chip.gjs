@@ -7,5 +7,10 @@ import { fn } from '@ember/helper';
     class="chip"
     aria-pressed={{if @active "true" "false"}}
     {{on "click" (fn @onToggle @name)}}
-  >{{@name}}{{#if @count}}<small>{{@count}}</small>{{/if}}</button>
+  >
+    {{@name}}
+    {{#if @count}}
+      <small>{{@count}}</small>
+    {{/if}}
+  </button>
 </template>
