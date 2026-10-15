@@ -13,7 +13,7 @@ const background = (img) =>
           href={{f.event.link}}
           target="_blank"
           rel="noopener noreferrer"
-          style={{background f.img}}
+          style={{background f.background_b64}}
           aria-label={{f.event.title}}
         >
           <div class="body">
