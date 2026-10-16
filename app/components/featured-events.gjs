@@ -1,8 +1,7 @@
 import { htmlSafe } from '@ember/template';
 import { whenLabel } from 'lmc-local-events/utils/dates';
 
-const background = (img) =>
-  htmlSafe(`background-image:url(data:image/jpeg;base64,${img})`);
+const background = (img) => htmlSafe(`background-image:url(${img})`);
 
 <template>
   <div class="wrap">

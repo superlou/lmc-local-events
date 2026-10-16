@@ -14,9 +14,10 @@ export default class EventsService extends Service {
   }
 
   async loadEvents() {
-    const response = (this.rawEvents = await fetch(
+    // eslint-disable-next-line
+    const response = await fetch(
       'https://lmc-local-events-data.s3.us-east-1.amazonaws.com/public/data.json',
-    ));
+    );
 
     const rawEvents = await response.json();
 
