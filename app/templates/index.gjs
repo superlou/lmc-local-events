@@ -1,6 +1,7 @@
 import { pageTitle } from 'ember-page-title';
 import FeaturedEvents from 'lmc-local-events/components/featured-events';
 import EventExplorer from 'lmc-local-events/components/event-explorer';
+import { formatDate, formatTime } from 'ember-intl';
 
 <template>
   {{pageTitle "LMC Media Community Events"}}
@@ -24,6 +25,11 @@ import EventExplorer from 'lmc-local-events/components/event-explorer';
       <strong><a href="http://lmcmedia.org">LMC Media</a></strong>. Event
       details come from local organizations; check each event's page for the
       latest information.
+    </div>
+    <div class="wrap light">
+      Last updated at
+      {{formatDate @model.built_at}}
+      {{formatTime @model.built_at}}.
     </div>
   </footer>
 </template>

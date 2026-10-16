@@ -7,6 +7,7 @@ const today = startOfToday();
 export default class EventsService extends Service {
   @tracked all = [];
   @tracked featured = [];
+  @tracked built_at = null;
 
   constructor() {
     super(...arguments);
@@ -20,6 +21,8 @@ export default class EventsService extends Service {
     );
 
     const rawEvents = await response.json();
+
+    this.built_at = rawEvents.built_at;
 
     this.all = rawEvents.events
       .map((e) => ({ ...e, ...parseWhen(e.when) }))
