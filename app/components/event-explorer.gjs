@@ -1,8 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import TagChip from './tag-chip';
 import TagsPanel from './tags-panel';
-import { formatDate, timeLabel } from 'lmc-local-events/utils/dates';
+import EventsTable from './events-table';
 
 const TOP_TAGS = 14;
 
@@ -132,45 +131,10 @@ export default class EventExplorer extends Component {
       />
 
       <p class="status" aria-live="polite">{{this.status}}</p>
+
       <div class="tablewrap">
-        <table>
-          <thead>
-            <tr><th>When</th><th>Event</th><th>Where</th><th>Tags</th></tr>
-          </thead>
-          <tbody>
-            {{#each this.rows key="id" as |e|}}
-              <tr class={{if e.past "past"}}>
-                <td class="date"><b>{{formatDate e.date}}</b><span>{{timeLabel
-                      e.date
-                      e.hasTime
-                    }}</span></td>
-                <td class="ev">
-                  <a
-                    class="t"
-                    href={{e.link}}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{{e.title}}</a>
-                  <div class="org">{{e.organization}}{{#if e.past}}
-                      · Past event{{/if}}</div>
-                  <p class="d">{{e.why}}</p>
-                </td>
-                <td class="where">{{e.where}}</td>
-                <td class="tg">
-                  <div class="tags">
-                    {{#each e.tagItems key="name" as |t|}}
-                      <TagChip
-                        @name={{t.name}}
-                        @active={{t.active}}
-                        @onToggle={{this.toggle}}
-                      />
-                    {{/each}}
-                  </div>
-                </td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
+        <EventsTable @events={{this.rows}} @toggle={{this.toggle}} />
+
         {{#unless this.rows.length}}
           <div class="empty">No events match those tags. Try “Match any” or
             clear a filter.</div>
