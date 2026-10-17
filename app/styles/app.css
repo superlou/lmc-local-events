@@ -77,6 +77,44 @@ header.top {
   padding: 36px 0 22px;
 }
 
+.donate {
+  padding: 36px 0 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  column-gap: 1.2dvb;
+  justify-content: space-between;
+  align-items: center;
+
+  & button {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 10px;
+    max-width: 200px;
+    font-size: 1.2em;
+    flex-grow: 1;
+    animation: breathe 4s ease-in-out infinite;
+    justify-content: center;
+
+    &:hover {
+      border-color: var(--accent);
+      background: var(--line);
+    }
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 1px var(--accent);
+  }
+
+  50% {
+    box-shadow: 0 0 10px 5px var(--accent);
+  }
+}
+
 .eyebrow {
   font-size: 0.78rem;
   letter-spacing: 0.14em;

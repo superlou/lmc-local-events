@@ -16,6 +16,12 @@ import { formatDate, formatTime } from 'ember-intl';
 
   <main>
     <FeaturedEvents @events={{@model.featured}} />
+
+    <div class="wrap donate">
+      <p>Find an experience you loved? Donate a coffee to LMC!</p>
+      <button type="button">Donate</button>
+    </div>
+
     <EventExplorer @events={{@model.all}} />
   </main>
 
