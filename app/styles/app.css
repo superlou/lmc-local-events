@@ -1,48 +1,21 @@
 :root {
   box-sizing: border-box;
   padding: env(safe-area-inset-top, 0) 2em env(safe-area-inset-bottom, 0);
+  color-scheme: light dark;
 
-  --bg: #faf6ef;
-  --surface: #fff;
-  --ink: #2a2420;
-  --muted: #6f655c;
-  --muted-more: #5f554c;
-  --line: #e6ddd0;
-  --accent: #b4471f;
-  --accent-ink: #fff;
-  --chip: #f1e9dc;
-  --chip-on: #b4471f;
-  --hover: #fbf3e6;
+  --bg: light-dark(#f4f7fa, #0f172a);
+  --surface: light-dark(#fff, #1e293b);
+  --ink: light-dark(#1e293b, #f8fafc);
+  --muted: light-dark(#475569, #94a3b8);
+  --muted-more: light-dark(#94a3b8, #475569);
+  --line: light-dark(#e2e8f0, #334155);
+  --accent: light-dark(#0284c7, #38bdf8);
+  --accent-ink: light-dark(#fff, #0f172a);
+  --chip: light-dark(#e2eaf4, #314361);
+  --chip-on: light-dark(#0284c7, #38bdf8);
+  --hover: light-dark(#f0f4fc, #233046);
   --serif: "Fraunces", georgia, "Times New Roman", serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #1b1713;
-    --surface: #26201a;
-    --ink: #f3ebe0;
-    --muted: #b0a498;
-    --line: #3a3128;
-    --accent: #e8845a;
-    --accent-ink: #1b1713;
-    --chip: #352c23;
-    --chip-on: #e8845a;
-    --hover: #2d251e;
-  }
-}
-
-:root[data-theme="dark"] {
-  --bg: #1b1713;
-  --surface: #26201a;
-  --ink: #f3ebe0;
-  --muted: #b0a498;
-  --line: #3a3128;
-  --accent: #e8845a;
-  --accent-ink: #1b1713;
-  --chip: #352c23;
-  --chip-on: #e8845a;
-  --hover: #2d251e;
 }
 
 *,
@@ -96,10 +69,16 @@ header.top {
     flex-grow: 1;
     animation: breathe 4s ease-in-out infinite;
     justify-content: center;
+    box-shadow: 0 0 5px 1px var(--accent);
+    transition: background 0.3s ease-in-out;
+    transition: border-color 0.3s ease-in-out;
+    transition: animation 0.3s ease-in-out;
 
     &:hover {
       border-color: var(--accent);
-      background: var(--line);
+      background: var(--hover);
+      box-shadow: 0 0 10px 2px var(--accent);
+      animation: none;
     }
   }
 }
@@ -107,11 +86,11 @@ header.top {
 @keyframes breathe {
   0%,
   100% {
-    box-shadow: 0 0 5px 1px var(--accent);
+    box-shadow: 0 0 1px 1px var(--accent);
   }
 
   50% {
-    box-shadow: 0 0 10px 5px var(--accent);
+    box-shadow: 0 0 10px 2px var(--accent);
   }
 }
 
