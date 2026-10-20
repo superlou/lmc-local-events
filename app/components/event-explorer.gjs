@@ -1,19 +1,56 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import TagsPanel from './tags-panel';
+import TagsPanel from './filter-panel';
 import EventsTable from './events-table';
+import {
+  allTimeRange,
+  todayRange,
+  thisWeekRange,
+  thisWeekendRange,
+} from '../utils/date-ranges';
 
 const TOP_TAGS = 14;
+export const DATE_FILTER = Object.freeze({
+  ALL: 'ALL',
+  TODAY: 'TODAY',
+  THIS_WEEK: 'THIS_WEEK',
+  THIS_WEEKEND: 'THIS_WEEKEND',
+});
 
 export default class EventExplorer extends Component {
   @tracked selected = [];
   @tracked matchAll = true;
   @tracked showPast = false;
   @tracked showAllTags = false;
+  @tracked matchDate = DATE_FILTER.ALL;
 
   get scope() {
-    return this.args.events.filter((e) => this.showPast || !e.past);
+    return this.args.events
+      .filter((e) => this.showPast || !e.past)
+      .filter(this.filterByDate);
   }
+
+  get matchDateRange() {
+    let now = new Date();
+
+    if (this.matchDate === DATE_FILTER.ALL) {
+      return allTimeRange();
+    } else if (this.matchDate === DATE_FILTER.TODAY) {
+      return todayRange(now);
+    } else if (this.matchDate === DATE_FILTER.THIS_WEEK) {
+      return thisWeekRange(now);
+    } else if (this.matchDate === DATE_FILTER.THIS_WEEKEND) {
+      return thisWeekendRange(now);
+    } else {
+      return 0;
+    }
+  }
+
+  filterByDate = (e) => {
+    let d = new Date(Date.parse(e.when));
+    let [start, finish] = this.matchDateRange;
+    return d >= start && d <= finish;
+  };
 
   get pastCount() {
     return this.args.events.filter((e) => e.past).length;
@@ -102,6 +139,14 @@ export default class EventExplorer extends Component {
     this.matchAll = value;
   };
 
+  setMatchDate = (value) => {
+    if (this.matchDate === value) {
+      this.matchDate = DATE_FILTER.ALL;
+    } else {
+      this.matchDate = value;
+    }
+  };
+
   setShowPast = (event) => {
     this.showPast = event.target.checked;
   };
@@ -113,7 +158,7 @@ export default class EventExplorer extends Component {
   <template>
     <section class="all wrap" aria-labelledby="all-events">
       <h2 class="sec" id="all-events">All events</h2>
-      <p class="sub tight">Sorted by date. Pick tags to narrow the list.</p>
+      <p class="sub tight">Sorted by date. Filter to narrow the list.</p>
 
       <TagsPanel
         @visibleTags={{this.visibleTags}}
@@ -128,6 +173,8 @@ export default class EventExplorer extends Component {
         @toggle={{this.toggle}}
         @toggleAllTags={{this.toggleAllTags}}
         @clear={{this.clear}}
+        @matchDate={{this.matchDate}}
+        @setMatchDate={{this.setMatchDate}}
       />
 
       <p class="status" aria-live="polite">{{this.status}}</p>

@@ -240,6 +240,10 @@ h2.sec {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+
+  &.no-margin {
+    margin-bottom: 0;
+  }
 }
 
 .panel-head strong {
